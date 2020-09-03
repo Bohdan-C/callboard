@@ -1,12 +1,11 @@
-import React, { useState } from "react";
-import { Button } from "@material-ui/core";
-import image from "../../assets/images/default.jpg";
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
+import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
-import GridListTileBar from "@material-ui/core/GridListTileBar";
-import IconButton from "@material-ui/core/IconButton";
-import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import { getAds } from "../../redux/actions/action";
+import AddAd from "../../components/AddAd";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,10 +26,19 @@ const useStyles = makeStyles((theme) => ({
   },
   gridListTile: {
     maxWidth: 270,
+    minHeight: 200,
   },
+  content: {
+    height: 190,
+    borderRadius: "15px",
+    backgroundColor: "#ffffff",
+  },
+  title: {
+    fontSize: 20,
+    margin: 0,
+  },  
   image: {
     width: 268,
-    height: 201,
   },
   icon: {
     color: "white",
@@ -39,62 +47,101 @@ const useStyles = makeStyles((theme) => ({
 
 function Callboard() {
   const classes = useStyles();
+  const [state, setState] = useState([]);
+  const dispatch = useDispatch();
 
-  const IDS = {
-    TITLE: "title",
-    CONTENT: "content",
-  };
+  useEffect(() => {
+    dispatch(getAds);
+    axios
+      .get("https://simple-blog-api.crew.red/posts?_limit=7")
+      .then((data) => {
+        setState(data.data);
+      })
+      .catch((err) => {
+        console.log("Error!", err);
+      });
+  }, []);
 
-  const [state, setState] = useState({
-    [IDS.TITLE]: "",
-    [IDS.CONTENT]: "",
-  });
-
-  console.log("state", state);
-
-  const onChange = (event) => {
-    const { id, value } = event.target;
-
-    setState((currentState) => ({
-      ...currentState,
-      [id]: value,
-    }));
-  };
-
-  const addAds = (event) => {
-    event.preventDefault();
-    alert("Ваше оголошення додано");
-    setState({ [IDS.TITLE]: "", [IDS.CONTENT]: "" });
-  };
+  function addAd(title) {
+    setState(state.concat([{
+      title,
+    }]))
+  }
 
   return (
     <div className={classes.container}>
-      <h1>Дошка оголошень</h1>
-      <Button variant="contained" color="primary">
-        Додати оголошення
-      </Button>
-      <div className={classes.formContainer}>
-        <form onSubmit={addAds}>
-          <input
-            id={IDS.TITLE}
-            value={state[IDS.TITLE]}
-            onChange={onChange}
-            placeholder="Назва..."
-          />
-          <input
-            id={IDS.CONTENT}
-            value={state[IDS.CONTENT]}
-            onChange={onChange}
-            placeholder="Опис..."
-          />
-          <button type="submit">Створити оголошення</button>
-        </form>
+    <AddAd onCreate={addAd} />
+      <div className={classes.root}>
+        <GridList cellHeight={100} spacing={10} className={classes.gridList}>
+          {state.map((ads) => (
+            <GridListTile
+              key={ads.id}
+              cols={ads.featured ? 2 : 1}
+              rows={ads.featured ? 2 : 1}
+              className={classes.gridListTile}
+            >
+              <div className={classes.content}>
+                <h2 className={classes.title}>{ads.title}</h2>
+                <p className={classes.body}>{ads.body}</p>
+              </div>
+            </GridListTile>
+          ))}
+        </GridList>
       </div>
     </div>
   );
 }
 
 export default Callboard;
+
+  // const IDS = {
+  //   TITLE: "title",
+  //   CONTENT: "content",
+  // };
+
+  // const [state, setState] = useState({
+  //   [IDS.TITLE]: "",
+  //   [IDS.CONTENT]: "",
+  // });
+
+  // console.log("state", state);
+
+  // const onChange = (event) => {
+  //   const { id, value } = event.target;
+
+  //   setState((currentState) => ({
+  //     ...currentState,
+  //     [id]: value,
+  //   }));
+  // };
+
+  // const addAds = (event) => {
+  //   event.preventDefault();
+  //   alert("Ваше оголошення додано");
+  //   setState({ [IDS.TITLE]: "", [IDS.CONTENT]: "" });
+  // };
+
+// <h1>Дошка оголошень</h1>
+//       <Button variant="contained" color="primary">
+//         Додати оголошення
+//       </Button>
+//       <div className={classes.formContainer}>
+//         <form onSubmit={addAds}>
+//           <input
+//             id={IDS.TITLE}
+//             value={state[IDS.TITLE]}
+//             onChange={onChange}
+//             placeholder="Назва..."
+//           />
+//           <input
+//             id={IDS.CONTENT}
+//             value={state[IDS.CONTENT]}
+//             onChange={onChange}
+//             placeholder="Опис..."
+//           />
+//           <button type="submit">Створити оголошення</button>
+//         </form>
+//       </div>
 
 // <div className={classes.root}>
 //         <GridList cellHeight={100} spacing={5} className={classes.gridList}>
