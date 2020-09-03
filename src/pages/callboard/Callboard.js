@@ -96,12 +96,12 @@ export default Callboard;
 
   // const IDS = {
   //   TITLE: "title",
-  //   CONTENT: "content",
+  //   BODY: "body",
   // };
 
   // const [state, setState] = useState({
   //   [IDS.TITLE]: "",
-  //   [IDS.CONTENT]: "",
+  //   [IDS.BODY]: "",
   // });
 
   // console.log("state", state);

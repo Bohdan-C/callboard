@@ -1,22 +1,37 @@
-import React, {useState} from 'react'
+import React, { useState } from "react";
 
-function AddAd({onCreate}) {
-    const [state, setState] = useState('')
+function AddAd({ onCreate }) {
+  const IDS = {
+    TITLE: "title",
+    BODY: "body",
+  };
 
-    function submitHandler(event) {
-        event.preventDefault()
+  const [state, setState] = useState({
+    [IDS.TITLE]: "",
+    [IDS.BODY]: "",
+  });
 
-        if(state.trim()) {
-            onCreate(state)
-        }
-    }
+  const onChange = (event) => {
+    const { id, value } = event.target;
 
-    return (
-        <form onSubmit={submitHandler}>
-            <input value={state} onChange={event => setState(event.target.value)} />
-            <button type="submit">Додати оголошеня</button>
-        </form>
-    )
+    setState((currentState) => ({
+      ...currentState,
+      [id]: value,
+    }));
+  };
+
+  function submitHandler(event) {
+    event.preventDefault();
+    onCreate(state);
+  }
+
+  return (
+    <form onSubmit={submitHandler}>
+      <input id={IDS.TITLE} value={state[IDS.TITLE]} onChange={onChange} />
+      <input id={IDS.BODY} value={state[IDS.BODY]} onChange={onChange} />
+      <button type="submit">Додати оголошеня</button>
+    </form>
+  );
 }
 
-export default AddAd
+export default AddAd;
