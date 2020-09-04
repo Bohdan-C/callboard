@@ -1,11 +1,13 @@
 {
   "name": "callboard",
   "version": "1.0.0",
+  "homepage": "https://bohdan-c.github.io/callboard/",
   "description": "simple callboard",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --watch",
-    "build-prod": "webpack --config deploy.config.js"
+    "build-prod": "webpack --config deploy.config.js",
+    "deploy": "gh-pages -d build"
   },
   "repository": {
     "type": "git",
@@ -16,7 +18,6 @@
   "bugs": {
     "url": "https://github.com/Bohdan-C/callboard/issues"
   },
-  "homepage": "https://github.com/Bohdan-C/callboard#readme",
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
