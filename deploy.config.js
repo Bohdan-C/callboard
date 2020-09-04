@@ -1,6 +1,6 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path"),
-  jsPath = "./src",
+  jsPath = "./",
   distPath = "./dist",
   srcPath = path.join(__dirname, jsPath),
   outputPath = path.join(__dirname, distPath);

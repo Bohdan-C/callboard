@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --watch",
-    "build-prod": "webpack  --config deploy.config.js"
+    "build-prod": "webpack --config deploy.config.js"
   },
   "repository": {
     "type": "git",
