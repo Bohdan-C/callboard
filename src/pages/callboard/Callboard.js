@@ -62,6 +62,9 @@ function Callboard() {
     axios
       .get("https://simple-blog-api.crew.red/posts?_limit=7")
       .then((data) => {
+        if (!ads.length) {
+          return;
+        }
         dispatch(initialAds(data.data));
       })
       .catch((err) => {
@@ -69,8 +72,14 @@ function Callboard() {
       });
   }, []);
 
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem("ads") || "[]");
+    dispatch(initialAds(saved));
+  }, []);
+
   const addAd = (newAd) => {
     dispatch(addAdAction(newAd));
+    localStorage.setItem("ads", JSON.stringify([...ads, newAd]));
   };
 
   return (
