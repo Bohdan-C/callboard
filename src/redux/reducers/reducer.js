@@ -1,29 +1,29 @@
-import { ADS_FAIL, ADS_LOADING, ADS_SUCCESS, AD_ADD_SUCCESS } from "../types/types";
+import { INITIAL_ADS, ADD_AD } from "../types/types";
 
 export const initialState = {
-    ads: [],
-    title: '',
-    body: '',
-    isLoading: false,
+  ads: [],
+  title: "",
+  body: "",
+  isLoading: false,
 };
 
 const reducer = (state = initialState, action) => {
-    switch (action.type) {
-        case ADS_LOADING:
-            return { ...state, isLoading: !state.isLoading };
+  switch (action.type) {
+    case INITIAL_ADS:
+      return {
+        ...state,
+        ads: action.payload.initialAds,
+      };
 
-        case ADS_SUCCESS:
-            return { ...state, ads: [...action.payload] };
+    case ADD_AD:
+      return {
+        ...state,
+        ads: [...state.ads, action.payload.newAd],
+      };
 
-        case ADS_FAIL:
-            return state;
-
-        case AD_ADD_SUCCESS:
-            return { ...state, title: '', body: '' };
-
-        default:
-            return state;
-    }
+    default:
+      return state;
+  }
 };
 
 export default reducer;

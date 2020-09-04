@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import axios from 'axios';
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
-import { getAds } from "../../redux/actions/action";
+import { initialAds, addAdAction } from "../../redux/actions/action";
 import AddAd from "../../components/AddAd";
 
 const useStyles = makeStyles((theme) => ({
@@ -13,6 +13,8 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: "wrap",
     justifyContent: "center",
     overflow: "hidden",
+    marginTop: 60,
+    marginBottom: 60,
   },
   container: {
     display: "flex",
@@ -21,22 +23,27 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   gridList: {
-    width: 830,
-    height: 450,
+    width: 950,
+    height: 550,
   },
   gridListTile: {
-    maxWidth: 270,
-    minHeight: 200,
+    maxWidth: 310,
+    minHeight: 240,
   },
   content: {
-    height: 190,
+    height: 210,
     borderRadius: "15px",
     backgroundColor: "#ffffff",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    padding: 10,
   },
   title: {
+    fontWeight: 600,
     fontSize: 20,
-    margin: 0,
-  },  
+  },
+  body: {},
   image: {
     width: 268,
   },
@@ -47,39 +54,32 @@ const useStyles = makeStyles((theme) => ({
 
 function Callboard() {
   const classes = useStyles();
-  const [state, setState] = useState([]);
   const dispatch = useDispatch();
 
+  const { ads } = useSelector((state) => state.reducer);
+
   useEffect(() => {
-    dispatch(getAds);
     axios
       .get("https://simple-blog-api.crew.red/posts?_limit=7")
       .then((data) => {
-        setState(data.data);
+        dispatch(initialAds(data.data));
       })
       .catch((err) => {
         console.log("Error!", err);
       });
   }, []);
 
-  function addAd(title) {
-    setState(state.concat([{
-      title,
-    }]))
-  }
+  const addAd = (newAd) => {
+    dispatch(addAdAction(newAd));
+  };
 
   return (
     <div className={classes.container}>
-    <AddAd onCreate={addAd} />
+      <AddAd onCreate={addAd} />
       <div className={classes.root}>
         <GridList cellHeight={100} spacing={10} className={classes.gridList}>
-          {state.map((ads) => (
-            <GridListTile
-              key={ads.id}
-              cols={ads.featured ? 2 : 1}
-              rows={ads.featured ? 2 : 1}
-              className={classes.gridListTile}
-            >
+          {ads.map((ads) => (
+            <GridListTile key={ads.id} className={classes.gridListTile}>
               <div className={classes.content}>
                 <h2 className={classes.title}>{ads.title}</h2>
                 <p className={classes.body}>{ads.body}</p>
@@ -93,126 +93,3 @@ function Callboard() {
 }
 
 export default Callboard;
-
-  // const IDS = {
-  //   TITLE: "title",
-  //   BODY: "body",
-  // };
-
-  // const [state, setState] = useState({
-  //   [IDS.TITLE]: "",
-  //   [IDS.BODY]: "",
-  // });
-
-  // console.log("state", state);
-
-  // const onChange = (event) => {
-  //   const { id, value } = event.target;
-
-  //   setState((currentState) => ({
-  //     ...currentState,
-  //     [id]: value,
-  //   }));
-  // };
-
-  // const addAds = (event) => {
-  //   event.preventDefault();
-  //   alert("Ваше оголошення додано");
-  //   setState({ [IDS.TITLE]: "", [IDS.CONTENT]: "" });
-  // };
-
-// <h1>Дошка оголошень</h1>
-//       <Button variant="contained" color="primary">
-//         Додати оголошення
-//       </Button>
-//       <div className={classes.formContainer}>
-//         <form onSubmit={addAds}>
-//           <input
-//             id={IDS.TITLE}
-//             value={state[IDS.TITLE]}
-//             onChange={onChange}
-//             placeholder="Назва..."
-//           />
-//           <input
-//             id={IDS.CONTENT}
-//             value={state[IDS.CONTENT]}
-//             onChange={onChange}
-//             placeholder="Опис..."
-//           />
-//           <button type="submit">Створити оголошення</button>
-//         </form>
-//       </div>
-
-// <div className={classes.root}>
-//         <GridList cellHeight={100} spacing={5} className={classes.gridList}>
-//           {state.map((ads) => (
-//             <GridListTile
-//               key={ads.id}
-//               cols={ads.featured ? 2 : 1}
-//               rows={ads.featured ? 2 : 1}
-//               className={classes.gridListTile}
-//             >
-//               <img src={image} alt={ads.title} className={classes.image} />
-//               <GridListTileBar
-//                 title={ads.title}
-//                 titlePosition="bottom"
-//                 actionIcon={
-//                   <IconButton
-//                     aria-label={`star ${ads.title}`}
-//                     className={classes.icon}
-//                   >
-//                     <FavoriteBorderIcon />
-//                   </IconButton>
-//                 }
-//                 actionPosition="right"
-//                 className={classes.titleBar}
-//               />
-//             </GridListTile>
-//           ))}
-//         </GridList>
-//       </div>
-
-//   const [ads, setAds] = useState([
-//     {
-//       id: 1,
-//       title: "Title 1",
-//       author: "author fdbdnd",
-//       featured: true,
-//     },
-//     {
-//       id: 2,
-//       title: "Title 2",
-//       author: "author fdbdnd",
-//       featured: true,
-//     },
-//     {
-//       id: 3,
-//       title: "Title 3",
-//       author: "author fdbdnd",
-//       featured: true,
-//     },
-//     {
-//       id: 4,
-//       title: "Title 4",
-//       author: "author fdbdnd",
-//       featured: true,
-//     },
-//     {
-//       id: 5,
-//       title: "Title 5",
-//       author: "author fdbdnd",
-//       featured: true,
-//     },
-//     {
-//       id: 6,
-//       title: "Title 6",
-//       author: "author fdbdnd",
-//       featured: true,
-//     },
-//     {
-//       id: 7,
-//       title: "Title 7",
-//       author: "author fdbdnd",
-//       featured: true,
-//     },
-//   ]);
