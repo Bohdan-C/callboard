@@ -1,26 +1,40 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
-import { initialAds, addAdAction } from "../../redux/actions/action";
-import AddAd from "../../components/AddAd";
+import {
+  Card,
+  CardActions,
+  CardContent,
+  IconButton,
+  Typography,
+} from "@material-ui/core";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { initialPosts, deletePost } from "../../redux/actions/action";
+import SimpleModal from "../../components/Modal";
+import { BASE_URL } from "../../routes/Endpoints";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    overflow: "hidden",
-    marginTop: 60,
-    marginBottom: 60,
-  },
+const useStyles = makeStyles(() => ({
   container: {
+    marginTop: 40,
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+  },
+  root: {
+    width: 1071,
+    display: "flex",
+    flexWrap: "wrap",
+  },
+  card: {
+    width: 325,
+    height: 300,
+    margin: "1rem",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
   },
   gridList: {
     width: 950,
@@ -52,53 +66,90 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Callboard() {
+const Callboard = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  // const [posts, setPosts] = useState([]);
+  const { posts } = useSelector((state) => state.reducer);
+  console.log("posts", posts);
 
-  const { ads } = useSelector((state) => state.reducer);
-
+  //Get posts
   useEffect(() => {
     axios
-      .get("https://simple-blog-api.crew.red/posts?_limit=7")
+      .get(`${BASE_URL}`)
       .then((data) => {
-        if (!ads.length) {
-          return;
-        }
-        dispatch(initialAds(data.data));
+        dispatch(initialPosts(data.data));
       })
       .catch((err) => {
         console.log("Error!", err);
       });
   }, []);
 
-  useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("ads") || "[]");
-    dispatch(initialAds(saved));
-  }, []);
+  //here
+
+  //Delete post
+  const handleDelete = (id, event) => {
+    event.preventDefault();
+    axios.delete(`${BASE_URL}/${id}`).then(() => {
+      dispatch(deletePost(id));
+      posts.filter((post) => post.id !== id);
+    });
+  };
 
   const addAd = (newAd) => {
     dispatch(addAdAction(newAd));
-    localStorage.setItem("ads", JSON.stringify([...ads, newAd]));
   };
 
+  // const handleLike = (id, event) => {
+  //   console.log("id", id);
+  // };
+
+  if (!posts.length) {
+    return (
+      <div className={classes.container}>
+        <Typography variant="h5" component="h5">
+          На даний момент пости відсутні.
+        </Typography>
+        <SimpleModal onCreate={addAd} />
+      </div>
+    );
+  }
   return (
     <div className={classes.container}>
-      <AddAd onCreate={addAd} />
+      <SimpleModal />
       <div className={classes.root}>
-        <GridList cellHeight={100} spacing={10} className={classes.gridList}>
-          {ads.map((ads) => (
-            <GridListTile key={ads.id} className={classes.gridListTile}>
-              <div className={classes.content}>
-                <h2 className={classes.title}>{ads.title}</h2>
-                <p className={classes.body}>{ads.body}</p>
-              </div>
-            </GridListTile>
-          ))}
-        </GridList>
+        {posts.map((post) => (
+          <Card key={post.id} className={classes.card}>
+            <CardContent>
+              <Typography variant="h5" component="h5">
+                {post.title}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" component="p">
+                {post.content}
+              </Typography>
+            </CardContent>
+            <CardActions disableSpacing>
+              <IconButton
+                onClick={() => console.log("post.likes", post.likes)}
+                aria-label="like"
+              >
+                <FavoriteIcon />
+                <Typography variant="body2" color="textSecondary" component="p">
+                  {post.likes}
+                </Typography>
+              </IconButton>
+              <IconButton
+                onClick={() => handleDelete(post.id, event)}
+                aria-label="delete"
+              >
+                <DeleteIcon />
+              </IconButton>
+            </CardActions>
+          </Card>
+        ))}
       </div>
     </div>
   );
-}
+};
 
 export default Callboard;

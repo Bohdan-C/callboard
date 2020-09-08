@@ -1,33 +1,34 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
-  nav: {
-    display: "flex",
-    justifyContent: "space-around",
-    alignItems: "center",
-    textTransform: "uppercase",
-    fontSize: 13,
-    height: 60,
-    backgroundColor: "#0a0b0c",
-    marginBottom: 60,
-    fontWeight: 600,
+const useStyles = makeStyles(() => ({
+  logo: {
+    fontWeight: 800,
+    marginRight: 60,
+    marginLeft: 20,
   },
 }));
 
-function Navbar() {
+const Navbar = () => {
   const classes = useStyles();
   return (
-    <nav className={classes.nav}>
-      <a href="/">Bulletin board</a>
-      <ul>
-        <li>
-          <NavLink to="/">На Головну</NavLink>
-        </li>
-      </ul>
-    </nav>
+    <AppBar className={classes.nav} color="primary" position="static">
+      <Toolbar variant="dense">
+        <NavLink to="/">
+          <Typography className={classes.logo} variant="h6" component="h6">
+            Callboard
+          </Typography>
+        </NavLink>
+        <NavLink to="/">
+          <Typography variant="body2" component="p">
+            На Головну
+          </Typography>
+        </NavLink>
+      </Toolbar>
+    </AppBar>
   );
-}
+};
 
 export default Navbar;

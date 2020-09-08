@@ -1,39 +1,34 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
+import { Typography, Button } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   homePageContainer: {
     display: "flex",
-    height: "100%",
+    height: "100wh",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
   },
   title: {
-    fontSize: 28,
-    marginBottom: 15,
-  },
-  link: {
-    padding: 5,
-    border: "2px solid #636363",
-    borderRadius: 10,
-    fontSize: 18,
-    color: "#636363",
+    marginTop: 140,
+    marginBottom: 40,
   },
 }));
 
-function HomePage() {
+const HomePage = () => {
   const classes = useStyles();
-
   return (
     <div className={classes.homePageContainer}>
-      <h1 className={classes.title}>Вітаємо на дошці оголошень!</h1>
-      <Link className={classes.link} to="/callboard">
-        Перейти до дошки.
-      </Link>
+      <Typography className={classes.title} variant="h4" component="h4">
+        Вітаємо на дошці оголошень!
+      </Typography>
+      <Button variant="contained" color="primary">
+        <Link to="/callboard">Перейти до дошки</Link>
+      </Button>
     </div>
   );
-}
+};
 
 export default HomePage;

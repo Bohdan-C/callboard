@@ -1,2 +1,3 @@
-export const INITIAL_ADS = "INITIAL_ADS";
+export const INITIAL_POSTS = "INITIAL_POSTS";
 export const ADD_AD = "ADD_AD";
+export const DELETE_POST = "DELETE_POST"

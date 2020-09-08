@@ -1,24 +1,33 @@
-import { INITIAL_ADS, ADD_AD } from "../types/types";
+import { INITIAL_POSTS, ADD_AD, DELETE_POST } from "../types/types";
 
 export const initialState = {
-  ads: [],
+  posts: [],
   title: "",
-  body: "",
+  content: "",
+  likes: Number,
+  id: Number,
   isLoading: false,
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case INITIAL_ADS:
+    case INITIAL_POSTS:
       return {
         ...state,
-        ads: action.payload.initialAds,
+        posts: action.payload.initialPosts,
       };
 
     case ADD_AD:
+      // return {
+      //   ...state,
+      //   posts: [...state.posts, action.payload.newAd],
+      // };
+      return { ...state, title: "", content: "" };
+    case DELETE_POST:
       return {
         ...state,
-        ads: [...state.ads, action.payload.newAd],
+        // posts: [...state.posts.filter((post) => post.id !== action.payload.id)],
+        posts: [...state.posts.filter(post => post.id != action.payload)],
       };
 
     default:
