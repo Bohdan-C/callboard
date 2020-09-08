@@ -1,5 +1,5 @@
 const FrontendRoutes = {
-  CALLBOARD: "/callboard",
+  CALLBOARD: '/callboard',
 };
 
 export default FrontendRoutes;

@@ -1,9 +1,9 @@
-import { INITIAL_POSTS, ADD_AD, DELETE_POST } from "../types/types";
+import { INITIAL_POSTS, ADD_AD, DELETE_POST } from '../types/types';
 
 export const initialState = {
   posts: [],
-  title: "",
-  content: "",
+  title: '',
+  content: '',
   likes: Number,
   id: Number,
   isLoading: false,
@@ -22,12 +22,12 @@ const reducer = (state = initialState, action) => {
       //   ...state,
       //   posts: [...state.posts, action.payload.newAd],
       // };
-      return { ...state, title: "", content: "" };
+      return { ...state, title: '', content: '' };
     case DELETE_POST:
       return {
         ...state,
         // posts: [...state.posts.filter((post) => post.id !== action.payload.id)],
-        posts: [...state.posts.filter(post => post.id != action.payload)],
+        posts: [...state.posts.filter(post => post.id !== action.payload)],
       };
 
     default:

@@ -1,40 +1,41 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { useEffect } from 'react';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Card,
   CardActions,
   CardContent,
   IconButton,
   Typography,
-} from "@material-ui/core";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { initialPosts, deletePost } from "../../redux/actions/action";
-import SimpleModal from "../../components/Modal";
-import { BASE_URL } from "../../routes/Endpoints";
+} from '@material-ui/core';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { initialPosts, deletePost, addAdAction } from '../../redux/actions/action';
+import SimpleModal from '../../components/Modal';
+import { BASE_URL } from '../../routes/Endpoints';
+// import addAdAction from "../../redux/actions/action";
 
 const useStyles = makeStyles(() => ({
   container: {
     marginTop: 40,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   root: {
     width: 1071,
-    display: "flex",
-    flexWrap: "wrap",
+    display: 'flex',
+    flexWrap: 'wrap',
   },
   card: {
     width: 325,
     height: 300,
-    margin: "1rem",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
+    margin: '1rem',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
   gridList: {
     width: 950,
@@ -46,11 +47,11 @@ const useStyles = makeStyles(() => ({
   },
   content: {
     height: 210,
-    borderRadius: "15px",
-    backgroundColor: "#ffffff",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-around",
+    borderRadius: '15px',
+    backgroundColor: '#ffffff',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
     padding: 10,
   },
   title: {
@@ -62,7 +63,7 @@ const useStyles = makeStyles(() => ({
     width: 268,
   },
   icon: {
-    color: "white",
+    color: 'white',
   },
 }));
 
@@ -70,33 +71,33 @@ const Callboard = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   // const [posts, setPosts] = useState([]);
-  const { posts } = useSelector((state) => state.reducer);
-  console.log("posts", posts);
+  const { posts } = useSelector(state => state.reducer);
 
-  //Get posts
+  // Get posts
   useEffect(() => {
     axios
       .get(`${BASE_URL}`)
-      .then((data) => {
+      .then(data => {
         dispatch(initialPosts(data.data));
       })
-      .catch((err) => {
-        console.log("Error!", err);
+      .catch(err => {
+        // eslint-disable-next-line no-console
+        console.log('Error!', err);
       });
-  }, []);
+  }, [dispatch]);
 
-  //here
+  // here
 
-  //Delete post
+  // Delete post
   const handleDelete = (id, event) => {
     event.preventDefault();
     axios.delete(`${BASE_URL}/${id}`).then(() => {
       dispatch(deletePost(id));
-      posts.filter((post) => post.id !== id);
+      posts.filter(post => post.id !== id);
     });
   };
 
-  const addAd = (newAd) => {
+  const addAd = newAd => {
     dispatch(addAdAction(newAd));
   };
 
@@ -118,7 +119,7 @@ const Callboard = () => {
     <div className={classes.container}>
       <SimpleModal />
       <div className={classes.root}>
-        {posts.map((post) => (
+        {posts.map(post => (
           <Card key={post.id} className={classes.card}>
             <CardContent>
               <Typography variant="h5" component="h5">
@@ -130,7 +131,7 @@ const Callboard = () => {
             </CardContent>
             <CardActions disableSpacing>
               <IconButton
-                onClick={() => console.log("post.likes", post.likes)}
+                onClick={() => console.log('post.likes', post.likes)}
                 aria-label="like"
               >
                 <FavoriteIcon />

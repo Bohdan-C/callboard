@@ -1,9 +1,10 @@
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const path = require("path"),
-  jsPath = "./",
-  distPath = "./dist",
-  srcPath = path.join(__dirname, jsPath),
-  outputPath = path.join(__dirname, distPath);
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
+
+const jsPath = './';
+const distPath = './dist';
+const srcPath = path.join(__dirname, jsPath);
+const outputPath = path.join(__dirname, distPath);
 
 module.exports = {
   optimization: {
@@ -11,16 +12,16 @@ module.exports = {
   },
   output: {
     path: outputPath,
-    filename: "bundle.js",
-    publicPath: "/",
+    filename: 'bundle.js',
+    publicPath: '/',
   },
   entry: {
-    test: [path.join(srcPath, "/index.js")],
+    test: [path.join(srcPath, '/index.js')],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "index.html",
-      filename: "index.html",
+      template: 'index.html',
+      filename: 'index.html',
     }),
   ],
   context: srcPath,
@@ -28,24 +29,24 @@ module.exports = {
     rules: [
       {
         test: /\.html$/,
-        loader: "html-loader",
+        loader: 'html-loader',
       },
       {
         test: /\.worker\.js$/,
-        use: { loader: "worker-loader" },
+        use: { loader: 'worker-loader' },
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"],
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loaders: ["babel-loader"],
+        loaders: ['babel-loader'],
       },
       {
         test: /\.(eot|woff|woff2|ttf|svg|png|jpe?g|gif)$/,
-        loader: "url-loader?limit=8192",
+        loader: 'url-loader?limit=8192',
       },
     ],
   },
