@@ -11,10 +11,9 @@ import {
 } from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { initialPosts, deletePost, addAdAction } from '../../redux/actions/action';
+import { initialPosts, deletePost } from '../../redux/actions/action';
 import SimpleModal from '../../components/Modal';
 import { BASE_URL } from '../../routes/Endpoints';
-// import addAdAction from "../../redux/actions/action";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -97,9 +96,9 @@ const Callboard = () => {
     });
   };
 
-  const addAd = newAd => {
-    dispatch(addAdAction(newAd));
-  };
+  // const addAd = newAd => {
+  //   dispatch(addAdAction(newAd));
+  // };
 
   // const handleLike = (id, event) => {
   //   console.log("id", id);
@@ -111,7 +110,7 @@ const Callboard = () => {
         <Typography variant="h5" component="h5">
           На даний момент пости відсутні.
         </Typography>
-        <SimpleModal onCreate={addAd} />
+        <SimpleModal />
       </div>
     );
   }
@@ -131,7 +130,6 @@ const Callboard = () => {
             </CardContent>
             <CardActions disableSpacing>
               <IconButton
-                onClick={() => console.log('post.likes', post.likes)}
                 aria-label="like"
               >
                 <FavoriteIcon />

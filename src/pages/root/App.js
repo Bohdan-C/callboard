@@ -6,7 +6,6 @@ import HomePage from '../homepage/HomePage';
 import Navbar from '../../components/Navbar';
 import store from '../../redux/store/store';
 import FrontendRoutes from '../../routes/FrontendRoutes';
-import './App.css';
 
 function App() {
   return (
