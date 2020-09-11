@@ -1,4 +1,4 @@
-import { ADD_AD, INITIAL_POSTS, DELETE_POST } from '../types/types';
+import { ADD_AD, INITIAL_POSTS, DELETE_POST, LIKE_POST } from '../types/types';
 
 export const initialPosts = posts => ({
   type: INITIAL_POSTS,
@@ -14,9 +14,13 @@ export const addAdAction = newAd => ({
   },
 });
 
-export const deletePost = id => ({
+export const deletePost = postId => ({
   type: DELETE_POST,
   payload: {
-    id,
+    postId,
   },
+});
+
+export const likePost = ({
+  type: LIKE_POST,
 });

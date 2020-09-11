@@ -69,7 +69,6 @@ const useStyles = makeStyles(() => ({
 const Callboard = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  // const [posts, setPosts] = useState([]);
   const { posts } = useSelector(state => state.reducer);
 
   // Get posts
@@ -85,24 +84,19 @@ const Callboard = () => {
       });
   }, [dispatch]);
 
-  // here
-
   // Delete post
   const handleDelete = (id, event) => {
     event.preventDefault();
-    axios.delete(`${BASE_URL}/${id}`).then(() => {
-      dispatch(deletePost(id));
-      posts.filter(post => post.id !== id);
-    });
+    axios.delete(`${BASE_URL}/${id}`);
+    dispatch(deletePost(id));
   };
 
-  // const addAd = newAd => {
-  //   dispatch(addAdAction(newAd));
-  // };
-
-  // const handleLike = (id, event) => {
-  //   console.log("id", id);
-  // };
+  // Leke post
+  const handleLike = () => {
+    // event.preventDefault();
+    // like = +1;
+    // console.log('posts', { posts: posts.likes });
+  };
 
   if (!posts.length) {
     return (
@@ -131,6 +125,7 @@ const Callboard = () => {
             <CardActions disableSpacing>
               <IconButton
                 aria-label="like"
+                onClick={() => handleLike(post.likes)}
               >
                 <FavoriteIcon />
                 <Typography variant="body2" color="textSecondary" component="p">
@@ -138,7 +133,7 @@ const Callboard = () => {
                 </Typography>
               </IconButton>
               <IconButton
-                onClick={() => handleDelete(post.id, event)}
+                onClick={event => handleDelete(post.id, event)}
                 aria-label="delete"
               >
                 <DeleteIcon />

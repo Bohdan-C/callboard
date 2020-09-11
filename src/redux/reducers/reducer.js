@@ -1,4 +1,4 @@
-import { INITIAL_POSTS, ADD_AD, DELETE_POST } from '../types/types';
+import { INITIAL_POSTS, ADD_AD, DELETE_POST, LIKE_POST } from '../types/types';
 
 export const initialState = {
   posts: [],
@@ -18,18 +18,20 @@ const reducer = (state = initialState, action) => {
       };
 
     case ADD_AD:
-      // return {
-      //   ...state,
-      //   posts: [...state.posts, action.payload.newAd],
-      // };
-      return { ...state, title: '', content: '' };
+      return {
+        ...state,
+        posts: [...state.posts, action.payload.newAd],
+      };
     case DELETE_POST:
       return {
         ...state,
-        // posts: [...state.posts.filter((post) => post.id !== action.payload.id)],
-        posts: [...state.posts.filter(post => post.id !== action.payload)],
+        posts: state.posts.filter(post => post.id !== action.payload.postId),
       };
-
+    case LIKE_POST:
+      return {
+        ...state,
+        posts: state.posts.filter(post => post.id !== action.payload.postId),
+      };
     default:
       return state;
   }

@@ -76,6 +76,7 @@ function SimpleModal() {
     setState(currentState => ({
       ...currentState,
       [id]: value,
+      [IDS.ID]: uuidv4(),
     }));
   };
 
@@ -101,30 +102,28 @@ function SimpleModal() {
   };
 
   // Add post
-  const addPost = (event, newAd) => {
+  const addPost = () => {
     event.preventDefault();
     axios({
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       data: JSON.stringify(state),
       url: 'http://localhost:4200/posts',
-    }).then(() => {
-      dispatch(addAdAction(newAd));
+    });
+    dispatch(addAdAction(state));
+    setState({
+      [IDS.TITLE]: '',
+      [IDS.BODY]: '',
+      [IDS.LIKES]: 0,
     });
     handleClose();
   };
 
-  // function submitHandler(event) {
-  //   event.preventDefault();
-  //   onCreate({
-  //     ...state,
-  //     id: uuidv4(),
-  //   });
+  // const handleLike = () => {
   //   setState({
-  //     [IDS.TITLE]: "",
-  //     [IDS.BODY]: "",
+  //     [IDS.LIKES]: +1,
   //   });
-  // }
+  // };
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
@@ -176,33 +175,3 @@ function SimpleModal() {
 }
 
 export default SimpleModal;
-
-// function submitHandler(event) {
-//   event.preventDefault();
-//   axios({
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     data: JSON.stringify(state),
-//     url: "http://localhost:4200/posts",
-//   });
-//   setState({
-//     [IDS.TITLE]: "",
-//     [IDS.CONTENT]: "",
-//     [IDS.LIKES]: 0,
-//     [IDS.ID]: uuidv4(),
-//   });
-//   handleClose();
-// }
-
-// function submitHandler(event) {
-//   event.preventDefault();
-//   onCreate({
-//     ...state,
-//     id: uuidv4(),
-//   });
-//   setState({
-//     [IDS.TITLE]: "",
-//     [IDS.CONTENT]: "",
-//   });
-//   handleClose();
-// }
