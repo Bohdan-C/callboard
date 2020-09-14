@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { OrderedMap } from 'immutable';
 import { initialPosts, deletePost } from '../../redux/actions/action';
 import SimpleModal from '../../components/Modal';
 import { BASE_URL } from '../../routes/Endpoints';
@@ -70,6 +71,7 @@ const Callboard = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { posts } = useSelector(state => state.reducer);
+  console.log('posts', posts);
 
   // Get posts
   useEffect(() => {
@@ -98,16 +100,16 @@ const Callboard = () => {
     // console.log('posts', { posts: posts.likes });
   };
 
-  if (!posts.length) {
-    return (
-      <div className={classes.container}>
-        <Typography variant="h5" component="h5">
-          На даний момент пости відсутні.
-        </Typography>
-        <SimpleModal />
-      </div>
-    );
-  }
+  // if (!posts.size) {
+  //   return (
+  //     <div className={classes.container}>
+  //       <Typography variant="h5" component="h5">
+  //         На даний момент пости відсутні.
+  //       </Typography>
+  //       <SimpleModal />
+  //     </div>
+  //   );
+  // }
   return (
     <div className={classes.container}>
       <SimpleModal />
@@ -147,3 +149,37 @@ const Callboard = () => {
 };
 
 export default Callboard;
+
+// <div className={classes.container}>
+//       <SimpleModal />
+//       <div className={classes.root}>
+//         {OrderedMap(posts).map(post =>
+//           <Card key={post.id} className={classes.card}>
+//             <CardContent>
+//               <Typography variant="h5" component="h5">
+//                 {post.title}
+//               </Typography>
+//               <Typography variant="body2" color="textSecondary" component="p">
+//                 {post.content}
+//               </Typography>
+//             </CardContent>
+//             <CardActions disableSpacing>
+//               <IconButton
+//                 aria-label="like"
+//                 onClick={() => handleLike(post.likes)}
+//               >
+//                 <FavoriteIcon />
+//                 <Typography variant="body2" color="textSecondary" component="p">
+//                   {post.likes}
+//                 </Typography>
+//               </IconButton>
+//               <IconButton
+//                 onClick={event => handleDelete(post.id, event)}
+//                 aria-label="delete"
+//               >
+//                 <DeleteIcon />
+//               </IconButton>
+//             </CardActions>
+//           </Card>)}
+//       </div>
+//     </div>
