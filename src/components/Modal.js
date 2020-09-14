@@ -119,12 +119,6 @@ function SimpleModal() {
     handleClose();
   };
 
-  // const handleLike = () => {
-  //   setState({
-  //     [IDS.LIKES]: +1,
-  //   });
-  // };
-
   const body = (
     <div style={modalStyle} className={classes.paper}>
       <form onSubmit={addPost}>
